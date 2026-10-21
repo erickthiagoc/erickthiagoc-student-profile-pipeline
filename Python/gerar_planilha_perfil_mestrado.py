@@ -22,12 +22,8 @@ from pathlib import Path
 
 from bs4 import BeautifulSoup
 
-# ==========================================================================
 # CONFIG
-# ==========================================================================
-# Pasta base dos relatórios. Por padrão, a pasta onde ESTE script está
-# (deixe o script dentro da pasta do mestrado e rode dali). Para fixar outra
-# pasta, troque por um caminho completo, ex.: Path(r"C:\...\Estágio\mestrado").
+
 PASTA_HTML     = Path(__file__).resolve().parent
 # Caminho COMPLETO do modelo (o mesmo arquivo usado na graduação).
 # AJUSTE para onde o modelo realmente está no seu PC:
@@ -40,9 +36,9 @@ GERAR_DEPARA   = True
 # (a pós está numa pasta só; deixe False, a menos que haja vários anos)
 UMA_PLANILHA_POR_ANO = False
 
-# ==========================================================================
+
 # CONSTANTES — regras de preenchimento (iguais à graduação, salvo indicado)
-# ==========================================================================
+
 COPIAR_DO_MODELO = [
     "Instituição",
     "Unidade Responsável",
@@ -66,14 +62,14 @@ TIPO_DOCUMENTO      = "Perfil de Estudantes por Curso"     # termo da taxonomia 
 POPULACAO_ANALISADA = "Estudantes"
 # NÍVEL: lido do título do relatório (Mestrado). Se não achar, usa este padrão:
 NIVEL_PADRAO        = "Mestrado"
-GRAU                = ""                                   # em branco (como na graduação)
+GRAU                = ""                                  
 
 ASSUNTO = ["Perfil dos Estudantes", "Pós-Graduação", "Acesso e Permanência"]
-SEPARADOR_ASSUNTO = "||"    # barra dupla, como no scraping
+SEPARADOR_ASSUNTO = "||"   
 
 MODALIDADE_PADRAO = "Presencial"
 
-EM_BRANCO = ["special_item_id"]   # Grau vem de GRAU; Unidade é preenchida (ver UNIDADES)
+EM_BRANCO = ["special_item_id"]  
 
 CONECTIVOS = {"de", "da", "do", "das", "dos", "e", "em"}
 
@@ -86,11 +82,7 @@ CONECTIVOS = {"de", "da", "do", "das", "dos", "e", "em"}
 #   Relatorio_Avalia_UnB_<UNID>_NOME_..._DATA    (com código de unidade)
 #   Relatorio_Avalia_(Mestrado|Doutorado)_UnB_<UNID>_NOME_..._DATA
 #   Perfil_(Doutorado|PosMestrado|...)_<UNID>_NOME_..._DATA
-#   SIGLA_-_(MESTRADO|DOUTORADO)_DATA            (só a sigla do programa)
-# OBS.: em vários arquivos os ACENTOS viraram "_" no nome (Administra__o =
-#       Administração, M_SICA = MÚSICA). Isso NÃO é recuperável do nome; use
-#       CORRECOES_PROGRAMA para arrumar a EXIBIÇÃO. O special_document continua
-#       igual ao nome real do arquivo/PDF (o link não é afetado).
+#   SIGLA_-_(MESTRADO|DOUTORADO)_DATA           
 
 UNIDADES = {   # código -> nome por extenso  (CONFIRA com a lista oficial da DAI)
     "CET":  "Centro de Excelência em Turismo",
@@ -125,7 +117,7 @@ UNIDADES = {   # código -> nome por extenso  (CONFIRA com a lista oficial da DA
     "ILD":  "Instituto de Letras",
 }
 # Códigos de DEPARTAMENTO usados nos anos antigos (2020-2023) -> faculdade.
-# >>> CONFERIR com a lista oficial da DAI <<<
+
 DEPARTAMENTOS = {
     'ADM': 'Faculdade de Economia, Administração, Contabilidade e Gestão de Políticas Públicas',
     'CCA': 'Faculdade de Economia, Administração, Contabilidade e Gestão de Políticas Públicas',
