@@ -1,0 +1,32 @@
+# --- Reports & generated data (contain institutional data: never commit) ---
+*.html
+*.htm
+*.pdf
+*.csv
+*.xlsx
+# keep only the model template if you want an EXAMPLE (anonymized) one:
+!exemplo_modelo.csv
+
+# Report/output folders
+PDFs_convertidos/
+**/graduacao/
+**/doutorado/
+Relatório*/
+Relatorio*/
+log_conversao.csv
+de-para*.csv
+planilha_perfil_*.csv
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
