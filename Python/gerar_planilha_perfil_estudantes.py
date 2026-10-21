@@ -27,16 +27,13 @@ from pathlib import Path
 
 from bs4 import BeautifulSoup
 
-# ==========================================================================
+
 # CONFIG — ajuste estes caminhos
-# ==========================================================================
-# Pasta base dos relatórios. Por padrão, a pasta onde ESTE script está
-# (deixe o script dentro da pasta "Anos" e rode dali). Para fixar outra pasta,
-# troque por um caminho completo, ex.: Path(r"C:\...\Estágio\Anos").
+
 PASTA_HTML   = Path(__file__).resolve().parent
-ARQUIVO_MODELO = Path("Modelo_planilha_perfil_estudantes_-_Modelo.csv")   # ajuste p/ caminho completo se necessário
+ARQUIVO_MODELO = Path("Modelo_planilha_perfil_estudantes_-_Modelo.csv") 
 SAIDA_PLANILHA = Path("planilha_perfil_estudantes.csv")
-SAIDA_DEPARA   = Path("de-para_nomes_arquivos.csv")       # None para não gerar
+SAIDA_DEPARA   = Path("de-para_nomes_arquivos.csv") 
 GERAR_DEPARA   = True
 
 # True  -> gera um CSV por ano (planilha_perfil_estudantes_AAAA.csv), agrupando
@@ -44,9 +41,8 @@ GERAR_DEPARA   = True
 # False -> gera um ÚNICO CSV com todos os anos juntos.
 UMA_PLANILHA_POR_ANO = False
 
-# ==========================================================================
 # CONSTANTES — regras de preenchimento combinadas
-# ==========================================================================
+
 # Colunas copiadas TAL QUAL do arquivo-modelo (valores institucionais fixos):
 COPIAR_DO_MODELO = [
     "Instituição",
@@ -73,10 +69,10 @@ TIPO_DOCUMENTO      = "Perfil de Estudantes por Curso"    # corrige o typo "Peri
 POPULACAO_ANALISADA = "Estudantes"
 NIVEL               = "Graduação"
 # Assunto: o campo é 'taxonomy|multiple', então aceita vários temas.
-# Ajuste a lista à vontade. Deixe [] (lista vazia) para deixar a coluna em branco.
+
 ASSUNTO = ["Perfil dos Estudantes", "Acesso e Permanência", "Indicadores de Graduação"]
 SEPARADOR_ASSUNTO = "||"   # separador entre temas (a orientadora usa barra dupla no scraping)
-MODALIDADE_PADRAO   = "Presencial"                        # troca para "A Distância" se detectar EaD (ver abaixo)
+MODALIDADE_PADRAO   = "Presencial"                       
 
 # Colunas que ficam SEMPRE em branco:
 EM_BRANCO = ["special_item_id", "Grau"]   # Unidade agora é preenchida (ver UNIDADES)
@@ -84,7 +80,7 @@ EM_BRANCO = ["special_item_id", "Grau"]   # Unidade agora é preenchida (ver UNI
 # Mapa código da unidade -> nome por extenso. O código vem do nome do arquivo
 # (Relatorio_Avalia_UnB_<CODIGO>_<Curso>_<data>). Códigos não listados aqui saem
 # com o próprio código e são apontados no fim para conferência.
-# >>> CONFIRA/AJUSTE os nomes conforme a lista oficial da DAI <<<
+
 UNIDADES = {
     "CET":  "Centro de Excelência em Turismo",
     "FACE": "Faculdade de Economia, Administração, Contabilidade e Gestão de Políticas Públicas",
@@ -113,12 +109,11 @@ UNIDADES = {
     "FCE":  "Faculdade de Ceilândia",
     "FGA":  "Faculdade do Gama",
     "FUP":  "Faculdade de Planaltina",
-    # --- códigos históricos/antigos (CONFERIR) ---
+    # códigos históricos/antigos
     "ADM":  "Faculdade de Economia, Administração, Contabilidade e Gestão de Políticas Públicas",
     "ILD":  "Instituto de Letras",
 }
 # Códigos de DEPARTAMENTO usados nos anos antigos (2020-2023) -> faculdade.
-# >>> CONFERIR com a lista oficial da DAI <<<
 DEPARTAMENTOS = {
     'ADM': 'Faculdade de Economia, Administração, Contabilidade e Gestão de Políticas Públicas',
     'CCA': 'Faculdade de Economia, Administração, Contabilidade e Gestão de Políticas Públicas',
@@ -179,14 +174,13 @@ CONECTIVOS = {"de", "da", "do", "das", "dos", "e"}
 # Correções pontuais no nome de exibição do curso:
 def corrigir_nome_curso(curso: str) -> str:
     curso = curso.replace("Teoria Crítica e História da Arte",
-                          "Teoria, Crítica e História da Arte")     # vírgula
-    curso = re.sub(r"\bMsi\b", "MSI", curso)                        # sigla LEA-MSI
+                          "Teoria, Crítica e História da Arte")     
+    curso = re.sub(r"\bMsi\b", "MSI", curso)                        
     return curso
 
 
-# ==========================================================================
 # FUNÇÕES AUXILIARES
-# ==========================================================================
+
 # Prefixos/rótulos que aparecem antes do código da unidade em vários anos:
 _PREFIXOS_GRAD = {"relatorio", "avalia", "perfil", "unb", "graduacao", "graduação",
                   "graduando", "graduandos", "mestrado", "doutorado"}
@@ -256,7 +250,7 @@ def extrair_ano_base(texto: str) -> str:
     NÃO serve para o ano-base. Retorna 'VERIFICAR' se não encontrar."""
     anos = re.findall(r"perfil geral\s*-\s*(20\d{2})", texto, re.I)
     if anos:
-        return max(anos)            # mais recente, caso o relatório traga uma série
+        return max(anos)
     return "VERIFICAR"
 
 
@@ -283,9 +277,8 @@ def limpar_nome_arquivo(stem: str) -> str:
     return s
 
 
-# ==========================================================================
 # GERAÇÃO DA PLANILHA
-# ==========================================================================
+
 def ano_da_pasta(caminho: Path) -> str:
     """Ano de publicação para agrupar as planilhas: procura AAAA nas pastas
     (ex.: '... - 2022/graduacao'); se não achar, usa a data do nome do arquivo."""
@@ -360,7 +353,7 @@ def main():
             return
     cabecalho, linha_ref, idx = carregar_modelo(modelo)
 
-    arquivos = sorted(PASTA_HTML.rglob("*.html"))   # pega TODOS os .html (todos os formatos)
+    arquivos = sorted(PASTA_HTML.rglob("*.html")) 
     print(f"Arquivos .html encontrados: {len(arquivos)}")
     if not arquivos:
         print(f"\nNENHUM .html encontrado em:\n  {PASTA_HTML}")
@@ -425,7 +418,7 @@ def main():
 
     # grava o de-para
     if GERAR_DEPARA and SAIDA_DEPARA:
-        # aviso de colisão: dois arquivos diferentes com o mesmo nome limpo
+      
         from collections import Counter
         colisoes = [n for n, c in Counter(x[2] for x in depara).items() if c > 1]
         if colisoes:
@@ -447,10 +440,6 @@ def main():
         for cod, exemplo in sorted(unidades_desconhecidas.items()):
             print(f"  - {cod}  (ex.: {exemplo})")
 
-    # AVISO: nomes de special_document repetidos entre anos diferentes.
-    # Se o mesmo curso aparece em 2020, 2021, ... com o MESMO nome de arquivo,
-    # o link/PDF fica idêntico e um sobrescreve o outro. Nesse caso é preciso
-    # incluir o ano no nome (me avise que eu ajusto os dois scripts).
     repetidos = [d for d, c in Counter(docs_gerados).items() if c > 1]
     if repetidos:
         print(f"\nATENÇÃO — {len(repetidos)} nome(s) de 'special_document' repetido(s) "
