@@ -1,6 +1,6 @@
 """
 gerar_planilha_perfil_doutorado.py
----------------------------------
+
 Gerador de planilha para os relatórios de DOUTORADO (pós-graduação).
   * Entende os vários formatos de nome de arquivo usados ao longo dos anos
     (ver comentário em parse_nome).
@@ -19,9 +19,9 @@ from pathlib import Path
 
 from bs4 import BeautifulSoup
 
-# ==========================================================================
+
 # CONFIG
-# ==========================================================================
+
 # Pasta base dos relatórios. Por padrão, a pasta onde ESTE script está
 # (deixe o script dentro da pasta do doutorado e rode dali). Para fixar outra
 # pasta, troque por um caminho completo, ex.: Path(r"C:\...\Estágio\Doutorado").
@@ -37,9 +37,8 @@ GERAR_DEPARA   = True
 # (o doutorado TEM pastas por ano; mude para True se quiser um CSV por ano, como na graduação)
 UMA_PLANILHA_POR_ANO = False
 
-# ==========================================================================
 # CONSTANTES — regras de preenchimento (iguais à graduação, salvo indicado)
-# ==========================================================================
+
 COPIAR_DO_MODELO = [
     "Instituição",
     "Unidade Responsável",
@@ -75,9 +74,9 @@ EM_BRANCO = ["special_item_id"]   # Grau vem de GRAU; Unidade é preenchida (ver
 CONECTIVOS = {"de", "da", "do", "das", "dos", "e", "em"}
 
 
-# ==========================================================================
+
 # FUNÇÕES AUXILIARES
-# ==========================================================================
+
 # Formatos de nome observados ao longo dos anos (todos suportados):
 #   Relatorio_Avalia_UnB__NOME_..._DATA          (nome por extenso, unidade vazia)
 #   Relatorio_Avalia_UnB_<UNID>_NOME_..._DATA    (com código de unidade)
@@ -89,7 +88,7 @@ CONECTIVOS = {"de", "da", "do", "das", "dos", "e", "em"}
 #       CORRECOES_PROGRAMA para arrumar a EXIBIÇÃO. O special_document continua
 #       igual ao nome real do arquivo/PDF (o link não é afetado).
 
-UNIDADES = {   # código -> nome por extenso  (CONFIRA com a lista oficial da DAI)
+UNIDADES = {   # código -> nome por extenso
     "CET":  "Centro de Excelência em Turismo",
     "FACE": "Faculdade de Economia, Administração, Contabilidade e Gestão de Políticas Públicas",
     "FAC":  "Faculdade de Comunicação",
@@ -122,7 +121,7 @@ UNIDADES = {   # código -> nome por extenso  (CONFIRA com a lista oficial da DA
     "ILD":  "Instituto de Letras",
 }
 # Códigos de DEPARTAMENTO usados nos anos antigos (2020-2023) -> faculdade.
-# >>> CONFERIR com a lista oficial da DAI <<<
+
 DEPARTAMENTOS = {
     'ADM': 'Faculdade de Economia, Administração, Contabilidade e Gestão de Políticas Públicas',
     'CCA': 'Faculdade de Economia, Administração, Contabilidade e Gestão de Políticas Públicas',
@@ -289,9 +288,8 @@ def ano_da_pasta(caminho: Path) -> str:
     return m.group(1) if m else "sem_ano"
 
 
-# ==========================================================================
 # GERAÇÃO
-# ==========================================================================
+
 def carregar_modelo(caminho_modelo: Path):
     with caminho_modelo.open(newline="", encoding="utf-8") as fh:
         linhas = list(csv.reader(fh))
