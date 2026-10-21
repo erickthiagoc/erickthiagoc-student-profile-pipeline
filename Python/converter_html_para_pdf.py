@@ -27,17 +27,13 @@ from pathlib import Path
 
 from playwright.async_api import async_playwright
 
-# ==========================================================================
-# CONFIG
-# ==========================================================================
-# Pasta de entrada = a pasta onde ESTE script está (busca recursiva).
 PASTA_ENTRADA = Path(__file__).resolve().parent
 PASTA_SAIDA   = PASTA_ENTRADA / "PDFs_convertidos"
 LOG_CONVERSAO = PASTA_SAIDA / "log_conversao.csv"
 
 CONCORRENCIA  = 4          # quantos arquivos converter ao mesmo tempo (4-6 é seguro)
 ESPERA_MS     = 4000       # espera após carregar, para os gráficos assentarem
-TIMEOUT_MS    = 120000     # timeout de carregamento por página
+TIMEOUT_MS    = 120000   
 
 # Como organizar os PDFs de saída:
 #   "por_ano"  -> uma subpasta por ano (2020, 2021, ...)  [recomendado]
@@ -46,16 +42,15 @@ TIMEOUT_MS    = 120000     # timeout de carregamento por página
 ESTRUTURA_SAIDA = "por_ano"
 
 # True = SIMULAÇÃO (só lista o que faria). False = converte de verdade.
-# Dica: rode com True primeiro; depois mude para False e SALVE (Ctrl+S).
+
 SIMULAR = True
 
 if not SIMULAR:
     PASTA_SAIDA.mkdir(parents=True, exist_ok=True)
 
 
-# ==========================================================================
 # Nome de saída "limpo" (mesma regra usada na planilha -> special_document)
-# ==========================================================================
+
 def sem_acentos(s: str) -> str:
     return "".join(ch for ch in unicodedata.normalize("NFKD", s)
                    if not unicodedata.combining(ch))
@@ -84,15 +79,14 @@ def nome_pdf_limpo(html_path: Path) -> Path:
             destino_dir = PASTA_SAIDA / html_path.parent.relative_to(PASTA_ENTRADA)
         except ValueError:
             destino_dir = PASTA_SAIDA
-    else:  # "unica"
+    else: 
         destino_dir = PASTA_SAIDA
 
     return destino_dir / (stem + ".pdf")
 
 
-# ==========================================================================
 # Ações na página
-# ==========================================================================
+
 async def carregar_imagens(page):
     await page.evaluate("""
         async () => {
@@ -122,7 +116,7 @@ async def rolar_pagina(page):
 
 
 async def converter_um(context, html: Path, i: int, total: int, sem: asyncio.Semaphore):
-    async with sem:                       # limita a concorrência
+    async with sem:                    
         pdf_saida = nome_pdf_limpo(html)
         status, erro = "OK", ""
         page = None
@@ -166,7 +160,7 @@ async def converter():
     print("-" * 60)
     print(f"Arquivos HTML encontrados: {len(htmls)}")
 
-    # --- MODO SIMULAÇÃO: só mostra o plano, sem abrir o navegador ---
+    # MODO SIMULAÇÃO: só mostra o plano, sem abrir o navegador 
     if SIMULAR:
         contagem = {}
         exemplos = []
