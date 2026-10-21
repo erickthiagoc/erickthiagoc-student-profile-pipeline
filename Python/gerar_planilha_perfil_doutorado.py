@@ -19,14 +19,8 @@ from pathlib import Path
 
 from bs4 import BeautifulSoup
 
-
-# CONFIG
-
-# Pasta base dos relatórios. Por padrão, a pasta onde ESTE script está
-# (deixe o script dentro da pasta do doutorado e rode dali). Para fixar outra
-# pasta, troque por um caminho completo, ex.: Path(r"C:\...\Estágio\Doutorado").
 PASTA_HTML     = Path(__file__).resolve().parent
-# Caminho COMPLETO do modelo (o mesmo arquivo usado na graduação).
+
 # AJUSTE para onde o modelo realmente está no seu PC:
 ARQUIVO_MODELO = Path(r"C:\Users\01969472600\Downloads\Modelo_planilha_perfil_estudantes_-_Modelo.csv")
 SAIDA_PLANILHA = Path("planilha_perfil_doutorado.csv")
@@ -88,7 +82,7 @@ CONECTIVOS = {"de", "da", "do", "das", "dos", "e", "em"}
 #       CORRECOES_PROGRAMA para arrumar a EXIBIÇÃO. O special_document continua
 #       igual ao nome real do arquivo/PDF (o link não é afetado).
 
-UNIDADES = {   # código -> nome por extenso
+UNIDADES = { 
     "CET":  "Centro de Excelência em Turismo",
     "FACE": "Faculdade de Economia, Administração, Contabilidade e Gestão de Políticas Públicas",
     "FAC":  "Faculdade de Comunicação",
@@ -203,7 +197,7 @@ def parse_nome(stem: str):
     data = m.group(1)
     corpo = stem[:m.start()].rstrip("_")
 
-    ms = re.match(r"(.+?)_-_(MESTRADO|DOUTORADO)$", corpo, re.I)   # formato SIGLA
+    ms = re.match(r"(.+?)_-_(MESTRADO|DOUTORADO)$", corpo, re.I) 
     if ms:
         sigla = ms.group(1).strip()
         return {"programa": PROGRAMAS.get(sigla.upper(), sigla), "data": data,
