@@ -27,18 +27,12 @@ from pathlib import Path
 
 from bs4 import BeautifulSoup
 
-
-# CONFIG — ajuste estes caminhos
-
 PASTA_HTML   = Path(__file__).resolve().parent
 ARQUIVO_MODELO = Path("Modelo_planilha_perfil_estudantes_-_Modelo.csv") 
 SAIDA_PLANILHA = Path("planilha_perfil_estudantes.csv")
 SAIDA_DEPARA   = Path("de-para_nomes_arquivos.csv") 
 GERAR_DEPARA   = True
 
-# True  -> gera um CSV por ano (planilha_perfil_estudantes_AAAA.csv), agrupando
-#          pelo ANO DA PASTA (mesma divisão que você já tem em "Anos").
-# False -> gera um ÚNICO CSV com todos os anos juntos.
 UMA_PLANILHA_POR_ANO = False
 
 # CONSTANTES — regras de preenchimento combinadas
